@@ -1,5 +1,3 @@
-import csv
-
 def list_abnormal_hosts():
     hosts = []
     with open('/data/LANL/uncompressed/redteam.txt', 'r', encoding='utf-8') as file:
@@ -52,7 +50,7 @@ def extract_auth():
 
 if __name__ == '__main__':
     abnormal_hosts = list_abnormal_hosts()
-    # extract_dns()
+    extract_dns()
     extract_flows()
     extract_auth()
 
