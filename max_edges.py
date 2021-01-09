@@ -1,4 +1,8 @@
-# get max edge numbers of any 2 pair of nodes
+"""
+Get max edge numbers of any 2 pair of nodes
+Author:	Alston
+Date:	2020.12.28
+"""
 def get_max_edge_numbers(data_type):
     if data_type == 'dns':
         count_edges = {}

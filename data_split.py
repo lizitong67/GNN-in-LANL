@@ -1,3 +1,9 @@
+"""
+Split data into trining and testing set
+Author:	Alston
+Date:	2020.1.5
+"""
+
 def list_abnormal_hosts():
     hosts = []
     with open('/data/LANL/data_including_all_malhosts/redteam.txt', 'r', encoding='utf-8') as file:
@@ -85,7 +91,7 @@ def split_auth():
                         f.write(line)
                         f.close()
             file.close()
-        print("[+] All auth data file " + str(i).zfill(2) + " including malicious hosts are split !")
+        print("[+] Auth data file " + str(i).zfill(2) + " including malicious hosts are split !")
 
 
 if __name__ == '__main__':
@@ -97,8 +103,8 @@ if __name__ == '__main__':
         red_team.append(fields)
     print(red_team)
 
-    split_dns()
-    # split_flows()
-    # split_auth()
+    # split_dns()
+    split_flows()
+    split_auth()
 
 
