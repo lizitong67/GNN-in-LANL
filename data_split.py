@@ -1,7 +1,7 @@
 """
 Split data into trining and testing set
 Author:	Alston
-Date:	2020.1.5
+Date:	2021.1.5
 """
 
 def list_abnormal_hosts():

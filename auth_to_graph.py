@@ -1,7 +1,7 @@
 """
 Construct data into homo-graph
 Author:	Alston
-Date:	2020.1.9
+Date:	2021.1.9
 """
 import dgl
 import torch as th

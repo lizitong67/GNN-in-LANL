@@ -1,7 +1,7 @@
 """
 Statistics the data field to set feature space
 Author:	Alston
-Date:	2020.1.9
+Date:	2021.1.9
 """
 
 file_name = "/data/LANL/data_including_all_malhosts/train/auth.txt"
