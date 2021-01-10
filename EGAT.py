@@ -65,17 +65,14 @@ class EGATLayer(nn.Module):
             # compute softmax
             graph.edata['a'] = edge_softmax(graph, e)
 
-            print(graph.edata['a'])
             # # message passing
-            # graph.update_all(fn.u_mul_e('ft', 'a', 'm'),
-            #                  fn.sum('m', 'ft'))
-            # rst = graph.dstdata['ft']
+
 
 
 
 g = dgl.rand_graph(4,5)
-g.ndata['feat'] = th.ones(4,2)
-g.edata['feat'] = th.ones(5,3)
+g.ndata['feat'] = th.randn(4,2)
+g.edata['feat'] = th.randn(5,3)
 model = EGATLayer(2, 3, 3)
 model(g, g.ndata['feat'], g.edata['feat'])
 
