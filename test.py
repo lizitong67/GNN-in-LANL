@@ -1,4 +1,5 @@
-import torch
+import torch as th
+import dgl
 import torch.nn as nn
 import dgl.function as fn
 
@@ -45,6 +46,10 @@ import dgl.function as fn
 # '''
 #
 
+u, v = th.tensor([0, 1, 3, 3]), th.tensor([4, 5, 6, 6])
+g = dgl.graph((u, v))
+g.edata['feat'] = th.ones(4,2)
+print(g.edata['feat'][0])
 
 
 

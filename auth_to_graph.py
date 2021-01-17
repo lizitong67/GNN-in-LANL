@@ -9,8 +9,8 @@ from time import *
 
 
 def graph_construction():
-    file_name = "/data/LANL/data_including_all_malhosts/train/auth.txt"
-    num_of_edges = 2317309
+    # malicious events
+    mal_events = []
 
     # map of graph node ids and host names.
     # The index is node id in graph, and the values is the host name in auth.txt
@@ -22,7 +22,17 @@ def graph_construction():
     # One-hot encoding for edges
     edge_feats = []
 
-    with open(file_name, 'r', encoding='utf-8') as file:
+    labels = []
+    train_mask = []
+
+
+    with open("/data/LANL/data_including_all_malhosts/test/test_auth.txt", 'r', encoding='utf-8') as file:
+        for line in file:
+            mal_events.append(line.strip('\n'))
+        file.close()
+
+    # raining and testing data
+    with open("/data/LANL/data_including_all_malhosts/train_and_test.txt", 'r', encoding='utf-8') as file:
         for line in file:
 
             line = line.strip('\n')
@@ -54,27 +64,32 @@ def graph_construction():
             feat = feat_0 + feat_1 + feat_2 + feat_3
             edge_feats.append(feat)
 
-    file.close()
+            # edge label and train mask
+            if line in mal_events:
+                labels.append([1])
+                train_mask.append([1])
+            else:
+                labels.append([0])
+                train_mask.append([0])
+        file.close()
 
     # save the map of graph node-ids and host names.
-    with open('/data/LANL/data_including_all_malhosts/train/map_of_NodeId_and_HostName.txt', 'a+', encoding='utf-8') as f:
-        for i in range(0, len(host_name)):
-            line = str(i) + host_name[i]
-            f.write(line)
+    # with open('/data/LANL/data_including_all_malhosts/train/map_of_NodeId_and_HostName.txt', 'a+', encoding='utf-8') as f:
+    #     for i in range(0, len(host_name)):
+    #         line = str(i) + ':' +host_name[i]
+    #         f.writelines(line)
 
     # graph construction
     u_ids, v_ids = th.tensor(u), th.tensor(v)
-    edge_feats = th.tensor(edge_feats)
     g = dgl.graph((u_ids, v_ids), idtype=th.int32)
-    g.edata['feat'] = edge_feats
+    edge_feats = th.tensor(edge_feats)
+    labels = th.tensor(labels)
+    train_mask = th.tensor(train_mask)
 
     # To eliminate 0-in-degree nodes
     # bg = dgl.add_reverse_edges(g, copy_ndata=True, copy_edata=True)
     # return bg
-    return g
-
-
-
+    return g, edge_feats, labels, train_mask
 
 
 if __name__ == "__main__":
@@ -85,8 +100,12 @@ if __name__ == "__main__":
     list_authentication_orientation = ['TGS', 'TGT', 'LogOn', 'LogOff', 'AuthMap', 'ScreenLock', 'ScreenUnlock']
     list_failure_success = ['Fail', 'Success']
 
-    graph = graph_construction()
-    dgl.save_graphs('/data/LANL/data_including_all_malhosts/train/auth.bin', [graph])
-    print("[+] graph of auth has been saved!")
+    graph, edge_feats, labels, train_mask = graph_construction()
+    print(graph) 
+    print(edge_feats.shape)
+    print(labels.shape)
+    print(train_mask.shape)
+    # dgl.save_graphs('/data/LANL/data_including_all_malhosts/train/auth.bin', [graph])
+    # print("[+] graph of auth has been saved!")
     end_time = time()
     print("Time used: " + str(end_time - start_time))
