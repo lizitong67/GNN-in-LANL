@@ -29,7 +29,7 @@ if __name__ == '__main__':
             test_data.append(line)
         file.close()
     rst = merge(train_data, test_data)
-    with open('/data/LANL/data_including_all_malhosts/data_with_mask.txt', 'a+', encoding='utf-8') as file:
+    with open('/data/LANL/data_including_all_malhosts/train_and_test.txt.txt', 'a+', encoding='utf-8') as file:
         for item in rst:
             file.writelines(item)
         file.close()
