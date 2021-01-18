@@ -24,7 +24,7 @@ class EGATLayer(nn.Module):
         self._in_src_feats, self._in_dst_feats = expand_as_pair(in_feats)
         self._out_feats = out_feats
 
-        self.fc = nn.Linear(self._in_src_feats, out_feats * edata_channels, bias=False)
+        self.fc = nn.Linear(self._in_src_feats, self._out_feats * edata_channels, bias=False)
         self.edge_fc = nn.Linear(self._edata_channels, self._edata_channels, bias=False)
         self.nfeat_with_e_fc = nn.Linear(out_feats+1, out_feats , bias=False)
         self.attn_l = nn.Parameter(th.FloatTensor(size=(1, edata_channels, out_feats)))
@@ -83,18 +83,18 @@ class EGATLayer(nn.Module):
 
 
 # test
-start_time = time()
-num_nodes = 5
-num_edges = 4
-node_feat_dim = 3
-edge_feat_dim = 2
-out_node_feat_dim = 4
-g = dgl.rand_graph(num_nodes,num_edges)
-model = EGATLayer(node_feat_dim, out_node_feat_dim, edge_feat_dim)
-rst = model(g, th.randn(num_nodes,node_feat_dim), th.randn(num_edges,edge_feat_dim))
-print(rst)
-end_time = time()
-print("Time used: " + str(end_time - start_time))
+# start_time = time()
+# num_nodes = 5
+# num_edges = 4
+# node_feat_dim = 3
+# edge_feat_dim = 2
+# out_node_feat_dim = 4
+# g = dgl.rand_graph(num_nodes,num_edges)
+# model = EGATLayer(node_feat_dim, out_node_feat_dim, edge_feat_dim)
+# rst = model(g, th.randn(num_nodes,node_feat_dim), th.randn(num_edges,edge_feat_dim))
+# print(rst)
+# end_time = time()
+# print("Time used: " + str(end_time - start_time))
 
 
 

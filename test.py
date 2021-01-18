@@ -46,10 +46,17 @@ import dgl.function as fn
 # '''
 #
 
-u, v = th.tensor([0, 1, 3, 3]), th.tensor([4, 5, 6, 6])
-g = dgl.graph((u, v))
-g.edata['feat'] = th.ones(4,2)
-print(g.edata['feat'][0])
+# u, v = th.tensor([0, 0, 0, 1]), th.tensor([1, 2, 3, 3])
+# g = dgl.graph((u, v))
+# print(g.num_nodes())
+
+input = th.tensor([[[1, 2],
+                    [3, 4]]])
+print(input.view(input.shape[0], -1))
+
+
+
+
 
 
 

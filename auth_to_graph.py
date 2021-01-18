@@ -5,10 +5,17 @@ Date:	2021.1.9
 """
 import dgl
 import torch as th
-from time import *
 
 
 def graph_construction():
+    list_user_domian = ['U66@DOM1']
+    list_authentication_type = ['?', 'NTLM', 'Kerberos', 'Negotiate', 'MICROSOFT_AUTHENTICATION_PACKAGE_V1_0', 'N']
+    list_logon_type = ['?', 'Network', 'Batch', 'NetworkCleartext', 'Unlock', 'RemoteInteractive', 'Interactive',
+                       'Service', 'CachedInteractive', 'NewCredentials']
+    list_authentication_orientation = ['TGS', 'TGT', 'LogOn', 'LogOff', 'AuthMap', 'ScreenLock', 'ScreenUnlock']
+    list_failure_success = ['Fail', 'Success']
+
+
     # malicious events
     mal_events = []
 
@@ -82,30 +89,13 @@ def graph_construction():
     # graph construction
     u_ids, v_ids = th.tensor(u), th.tensor(v)
     g = dgl.graph((u_ids, v_ids), idtype=th.int32)
-    edge_feats = th.tensor(edge_feats)
+    edge_feats = th.FloatTensor(edge_feats)
     labels = th.tensor(labels)
     train_mask = th.tensor(train_mask)
+    # random node feature
+    node_feats = th.randn(g.num_nodes(), 20)
 
     # To eliminate 0-in-degree nodes
     # bg = dgl.add_reverse_edges(g, copy_ndata=True, copy_edata=True)
     # return bg
-    return g, edge_feats, labels, train_mask
-
-
-if __name__ == "__main__":
-    start_time = time()
-    list_user_domian = ['U66@DOM1']
-    list_authentication_type = ['?', 'NTLM', 'Kerberos', 'Negotiate', 'MICROSOFT_AUTHENTICATION_PACKAGE_V1_0', 'N']
-    list_logon_type = ['?', 'Network', 'Batch', 'NetworkCleartext', 'Unlock', 'RemoteInteractive', 'Interactive', 'Service','CachedInteractive', 'NewCredentials']
-    list_authentication_orientation = ['TGS', 'TGT', 'LogOn', 'LogOff', 'AuthMap', 'ScreenLock', 'ScreenUnlock']
-    list_failure_success = ['Fail', 'Success']
-
-    graph, edge_feats, labels, train_mask = graph_construction()
-    print(graph) 
-    print(edge_feats.shape)
-    print(labels.shape)
-    print(train_mask.shape)
-    # dgl.save_graphs('/data/LANL/data_including_all_malhosts/train/auth.bin', [graph])
-    # print("[+] graph of auth has been saved!")
-    end_time = time()
-    print("Time used: " + str(end_time - start_time))
+    return g, edge_feats, node_feats, labels, train_mask
